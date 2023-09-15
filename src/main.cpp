@@ -5,8 +5,7 @@
 int main() {
     setlocale(LC_ALL, "");
     
-    GameController gameController = GameController ();
-    InputController inputController = InputController ();
+    GameController gameController;
 
     gameController.startGame();
 
