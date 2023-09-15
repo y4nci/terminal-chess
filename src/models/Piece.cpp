@@ -104,7 +104,7 @@ std::vector<Point> Piece::getPossibleMoves(std::vector<Piece> otherPieces) {
     }
 
     for (Point unitVector : unitMove.unitMoveVectors) {
-        std::vector<Point> validMoves = getMovesRecursiveHelper(this->coordinates, unitVector, otherPieces, unitMove.multipleAllowed);
+        std::vector<Point> validMoves = getMovesRecursiveHelper(*this, this->coordinates, unitVector, otherPieces, unitMove.multipleAllowed);
         possibleMoves.insert(possibleMoves.end(), validMoves.begin(), validMoves.end());
     }
 
@@ -120,21 +120,22 @@ std::vector<Point> Piece::getPossibleMoves(std::vector<Piece> otherPieces) {
  * @param moveVector the direction to move
  * @return std::vector<Point> all valid moves in the given direction
  */
-std::vector<Point> getMovesRecursiveHelper(Point currentCoordinates, Point moveVector, std::vector<Piece> pieces, bool multipleAllowed) {
+std::vector<Point> getMovesRecursiveHelper(Piece thisPiece, Point currentCoordinates, Point moveVector, std::vector<Piece> pieces, bool multipleAllowed) {
     std::vector<Point> possibleMoves;
+    Point coordinates = currentCoordinates;
 
     do {
-        currentCoordinates += moveVector;
+        coordinates += moveVector;
 
-        if (currentCoordinates.x < 0 || currentCoordinates.x > 7 || currentCoordinates.y < 0 || currentCoordinates.y > 7) {
+        if (coordinates.x < 0 || coordinates.x > 7 || coordinates.y < 0 || coordinates.y > 7) {
             break;
         }
 
-        possibleMoves.push_back(currentCoordinates);
+        possibleMoves.push_back(coordinates);
 
         for (Piece piece : pieces) {
-            if (!piece.getIsDead() && piece.getType() != EMPTY_PIECE && piece.getCoordinates() == currentCoordinates) {
-                if (piece.getPlayer() == piece.getPlayer()) {
+            if (!piece.getIsDead() && piece.getType() != EMPTY_PIECE && piece.getCoordinates() == coordinates) {
+                if (piece.getPlayer() == thisPiece.getPlayer()) {
                     possibleMoves.pop_back();
                 }
 

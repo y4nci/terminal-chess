@@ -44,8 +44,10 @@ void Board::selectPieceAtCursor(bool select) {
     for (int i = 0; i < this->pieces.size(); i++) {
         Piece piece = this->pieces.at(i);
         Point coordinates = piece.getCoordinates();
-        
+
         if (coordinates == this->cursor) {
+            if (piece.getIsDead()) continue;
+            if (!select && i != this->selectedIdx) continue;
             if (this->selectedIdx != -1 && select) {
                 this->pieces.at(this->selectedIdx).setIsSelected(false);
             }
@@ -65,6 +67,7 @@ void Board::selectPieceAtCursor(bool select) {
 void Board::moveSelectedToCursor() {
     Point target = this->cursor;
     Piece selected;
+    bool moveSuccessful = true;
     
     if (selectedIdx == -1) return;
 
@@ -73,17 +76,23 @@ void Board::moveSelectedToCursor() {
     for (int i = 0; i < this->pieces.size(); i++) {
         Piece piece = this->pieces.at(i);
 
-        if (i == this->selectedIdx) return;
-
         if (piece.getCoordinates() == target) {
-            if (piece.getIsDead()) return;
-            if (piece.getType() == selected.getType()) return;
+            if (piece.getIsDead()) {
+                moveSuccessful = false;
+                continue;
+            }
+            if (i == this->selectedIdx) return;
+            if (piece.getPlayer() == selected.getPlayer()) return;
 
             this->pieces.at(i).setIsDead(true);
+
+            moveSuccessful = true;
 
             break;
         }
     }
+
+    if (!moveSuccessful) return;
 
     this->pieces.at(selectedIdx).setCoordinates(target);
     this->pieces.at(selectedIdx).setIsSelected(false);
@@ -91,53 +100,53 @@ void Board::moveSelectedToCursor() {
 
 void Board::display() {
     std::vector<std::wstring> displayedBoard (CHESS_BOARD);
+    std::vector<Point> possibleMoves;
     Piece selected;
+    Point coordinates;
 
     clear();
 
     for (Piece piece : this->pieces) {
         Point coordinates = piece.getCoordinates();
-        Point displayedCoordinates = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) - 1);
+        Point displayedCoordinates = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) + 3);
 
         if (piece.getIsDead()) continue;
         
-        displayedBoard[displayedCoordinates.x][displayedCoordinates.y] = piece.getUnicode();
+        displayedBoard[displayedCoordinates.x][displayedCoordinates.y] = piece.getUnicode()[0];
     }
 
     for (int i = 0; i < displayedBoard.size(); i++) {
-        mvaddwstr(i, 0, displayedBoard);
+        mvaddwstr(i, 0, displayedBoard.at(i).c_str());
     }
 
     if (this->selectedIdx != -1) {
         selected = this->pieces.at(this->selectedIdx);
-    } else {
-        return;
-    }
 
-    Point coordinates = selected.getCoordinates();
-    Point displayedCoordinates = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) - 1);
-    std::vector<Point> possibleMoves;
+        coordinates = selected.getCoordinates();
+        Point displayedCoordinates = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) + 3);
 
-    attron(COLOR_PAIR(Colouring::SELECTED)); // Use color pair 1 (yellow text on black background) for highlighting
-    mvaddwstr(displayedCoordinates.x, displayedCoordinates.y - 1, ">");
-    mvaddwstr(displayedCoordinates.x, displayedCoordinates.y, selected.getUnicode());
-    mvaddwstr(displayedCoordinates.x, displayedCoordinates.y + 1, "<");
-    attroff(COLOR_PAIR(Colouring::SELECTED)); // Turn off the color pair
-
-    possibleMoves = selected.getPossibleMoves(this->pieces);
-
-    attron(COLOR_PAIR(Colouring::POSSIBLE_MOVE));
+        attron(COLOR_PAIR(Colouring::SELECTED)); // Use color pair 1 (yellow text on black background) for highlighting
+        mvaddwstr(displayedCoordinates.x, displayedCoordinates.y - 1, L">");
+        mvaddwstr(displayedCoordinates.x, displayedCoordinates.y, selected.getUnicode().c_str());
+        mvaddwstr(displayedCoordinates.x, displayedCoordinates.y + 1, L"<");
+        attroff(COLOR_PAIR(Colouring::SELECTED)); // Turn off the color pair
     
-    for (Point possibleMove : possibleMoves) {
-        Point displayedMove = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) - 1);
+        possibleMoves = selected.getPossibleMoves(this->pieces);
 
-        mvaddwstr(displayedMove.x, displayedMove.y - 2, "║");
-        mvaddwstr(displayedMove.x, displayedMove.y + 2, "║");
+        attron(COLOR_PAIR(Colouring::POSSIBLE_MOVE));
+        
+        for (Point possibleMove : possibleMoves) {
+            Point displayedMove = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) + 3);
 
-        mvaddwstr(displayedMove.x - 1, displayedMove.y - 1, "═══");
-        mvaddwstr(displayedMove.x + 1, displayedMove.y - 1, "═══");
+            mvaddwstr(displayedMove.x, displayedMove.y - 2, L"║");
+            mvaddwstr(displayedMove.x, displayedMove.y + 2, L"║");
+
+            mvaddwstr(displayedMove.x - 1, displayedMove.y - 1, L"═══");
+            mvaddwstr(displayedMove.x + 1, displayedMove.y - 1, L"═══");
+        }
+
+        attroff(COLOR_PAIR(Colouring::POSSIBLE_MOVE));
     }
-
 
     attron(COLOR_PAIR(Colouring::CURSOR));
 

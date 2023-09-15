@@ -38,6 +38,6 @@ private:
 };
 
 wchar_t createUnicode(PieceType piece, PlayerType player);
-std::vector<Point> getMovesRecursiveHelper(Point, Point, std::vector<Piece>, bool);
+std::vector<Point> getMovesRecursiveHelper(Piece, Point, Point, std::vector<Piece>, bool);
 
 #endif
