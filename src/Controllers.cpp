@@ -66,8 +66,9 @@ void GameController::initUI() {
 
     init_pair(Colouring::POSSIBLE_MOVE, COLOR_RED, COLOR_BLACK);
     init_pair(Colouring::SELECTED, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(Colouring::CURSOR, COLOR_GREEN, COLOR_BLACK);
 
-    mvprintw(0, 0, "Hello! Press any key to start the game.");
+    this->display();
 }
 
 void GameController::startGame() {

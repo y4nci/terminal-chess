@@ -136,5 +136,11 @@ void Board::display() {
         mvaddwstr(displayedMove.x + 1, displayedMove.y - 1, "═══");
     }
 
-    attroff(COLOR_PAIR(Colouring::POSSIBLE_MOVE));
+
+    attron(COLOR_PAIR(Colouring::CURSOR));
+
+    mvaddwstr((this->cursor.x + 1) * 2, (this->cursor.y * 4) + 2, L"-");
+    mvaddwstr((this->cursor.x + 1) * 2, (this->cursor.y * 4) + 4, L"-");
+    
+    attroff(COLOR_PAIR(Colouring::CURSOR));
 }

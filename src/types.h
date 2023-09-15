@@ -23,7 +23,8 @@ enum PieceType {
 
 enum Colouring {
     SELECTED = 1,
-    POSSIBLE_MOVE = 2
+    POSSIBLE_MOVE = 2,
+    CURSOR = 3
 };
 
 struct UNIT_MOVE {
