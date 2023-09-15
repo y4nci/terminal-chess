@@ -27,6 +27,8 @@ void Board::setPieces(std::vector<Piece>& pieces) {
 }
 
 void Board::setCursor(Point cursor) {
+    if (cursor.x > 7 || cursor.x < 0 || cursor.y > 7 || cursor.y < 0) return;
+
     this->cursor = cursor;
 }
 
