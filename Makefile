@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -g -std=c++11 -I/opt/homebrew/opt/ncurses/include
+CFLAGS = -Wall -g -std=c++11 -I/opt/homebrew/opt/ncurses/include -D_XOPEN_SOURCE_EXTENDED
 LDFLAGS = -lncursesw -L/opt/homebrew/opt/ncurses/lib
 SRC_DIR = src
 

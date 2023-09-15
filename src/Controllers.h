@@ -8,7 +8,7 @@
 #include "types.h"
 
 #include <functional>
-#include <ncursesw/ncurses.h>
+#include <curses.h>
 #include <vector>
 
 class GameController;
