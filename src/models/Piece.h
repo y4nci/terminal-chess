@@ -18,7 +18,7 @@ public:
     PlayerType getPlayer();
     bool getIsDead();
     bool getIsSelected();
-    wchar_t getUnicode();
+    std::wstring getUnicode();
 
     void setType(PieceType piece);
     void setCoordinates(Point coordinates);

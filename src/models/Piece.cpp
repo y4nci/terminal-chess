@@ -50,8 +50,8 @@ bool Piece::getIsSelected() {
     return this->isSelected;
 }
 
-wchar_t Piece::getUnicode() {
-    return this->unicode;
+std::wstring Piece::getUnicode() {
+    return (std::wstring) { this->unicode, L'\0' };
 }
 
 void Piece::setType(PieceType piece) {
