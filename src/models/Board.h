@@ -6,7 +6,7 @@
 #include "Point.h"
 #include "../types.h"
 
-#include <ncurses.h>
+#include <ncursesw/ncurses.h>
 #include <vector>
 
 class Board {

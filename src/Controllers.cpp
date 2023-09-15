@@ -2,7 +2,7 @@
 
 GameController::GameController() {
     std::vector<Piece> chessPieces;
-    
+
     for (int i = 0; i < 8; i++) {
         Piece pawn (PieceType::PAWN, Point (6, i), PlayerType::WHITE);
         chessPieces.push_back(pawn);
@@ -71,7 +71,6 @@ void GameController::initUI() {
 }
 
 void GameController::startGame() {
-    this->display();
     this->inputController.start(*this);
 }
 

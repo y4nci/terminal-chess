@@ -91,6 +91,8 @@ void Board::display() {
     std::vector<std::wstring> displayedBoard (CHESS_BOARD);
     Piece selected;
 
+    clear();
+
     for (Piece piece : this->pieces) {
         Point coordinates = piece.getCoordinates();
         Point displayedCoordinates = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) - 1);
@@ -100,8 +102,8 @@ void Board::display() {
         displayedBoard[displayedCoordinates.x][displayedCoordinates.y] = piece.getUnicode();
     }
 
-    for (int i = 0; i < 8; i++) {
-        mvprintw(i, 0, (char*) displayedBoard[i].c_str());  // TODO: the type casting might be a problem
+    for (int i = 0; i < displayedBoard.size(); i++) {
+        mvaddwstr(i, 0, displayedBoard);
     }
 
     if (this->selectedIdx != -1) {
@@ -115,9 +117,9 @@ void Board::display() {
     std::vector<Point> possibleMoves;
 
     attron(COLOR_PAIR(Colouring::SELECTED)); // Use color pair 1 (yellow text on black background) for highlighting
-    mvprintw(displayedCoordinates.x, displayedCoordinates.y - 1, ">");
-    mvprintw(displayedCoordinates.x, displayedCoordinates.y, "%c", selected.getUnicode());
-    mvprintw(displayedCoordinates.x, displayedCoordinates.y + 1, "<");
+    mvaddwstr(displayedCoordinates.x, displayedCoordinates.y - 1, ">");
+    mvaddwstr(displayedCoordinates.x, displayedCoordinates.y, selected.getUnicode());
+    mvaddwstr(displayedCoordinates.x, displayedCoordinates.y + 1, "<");
     attroff(COLOR_PAIR(Colouring::SELECTED)); // Turn off the color pair
 
     possibleMoves = selected.getPossibleMoves(this->pieces);
@@ -127,11 +129,11 @@ void Board::display() {
     for (Point possibleMove : possibleMoves) {
         Point displayedMove = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) - 1);
 
-        mvprintw(displayedMove.x, displayedMove.y - 2, "║");
-        mvprintw(displayedMove.x, displayedMove.y + 2, "║");
+        mvaddwstr(displayedMove.x, displayedMove.y - 2, "║");
+        mvaddwstr(displayedMove.x, displayedMove.y + 2, "║");
 
-        mvprintw(displayedMove.x - 1, displayedMove.y - 1, "═══");
-        mvprintw(displayedMove.x + 1, displayedMove.y - 1, "═══");
+        mvaddwstr(displayedMove.x - 1, displayedMove.y - 1, "═══");
+        mvaddwstr(displayedMove.x + 1, displayedMove.y - 1, "═══");
     }
 
     attroff(COLOR_PAIR(Colouring::POSSIBLE_MOVE));
