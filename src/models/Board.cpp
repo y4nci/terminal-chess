@@ -65,7 +65,7 @@ void Board::selectPieceAtCursor(bool select) {
 void Board::moveSelectedToCursor() {
     Point target = this->cursor;
     Piece selected;
-    bool moveAllowed = false, moveSuccessful = true;
+    bool moveAllowed = false;
     
     if (selectedIdx == -1) return;
 
@@ -85,7 +85,6 @@ void Board::moveSelectedToCursor() {
 
         if (piece.getCoordinates() == target) {
             if (piece.getIsDead()) {
-                moveSuccessful = false;
                 continue;
             }
             if (i == this->selectedIdx) return;
@@ -93,13 +92,13 @@ void Board::moveSelectedToCursor() {
 
             this->pieces.at(i).setIsDead(true);
 
-            moveSuccessful = true;
+            this->pieces.at(selectedIdx).setCoordinates(target);
 
-            break;
+            this->selectedPiecePossibleMoves = this->pieces.at(selectedIdx).getPossibleMoves(this->pieces);
+
+            return;
         }
     }
-
-    if (!moveSuccessful) return;
 
     this->pieces.at(selectedIdx).setCoordinates(target);
 
