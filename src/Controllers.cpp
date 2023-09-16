@@ -56,7 +56,6 @@ GameController::GameController() {
 }
 
 GameController::~GameController() {
-    // TODO: here
     endwin();
 }
 
@@ -137,7 +136,7 @@ void InputController::start(GameController& gameController) {
                 break;
             case 'q':
                 this->quit(gameController);
-                break;
+                return;
             case '\n':
                 this->moveSelectedToCursor(gameController);
                 break;
