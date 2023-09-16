@@ -136,7 +136,7 @@ void Board::display() {
         attron(COLOR_PAIR(Colouring::POSSIBLE_MOVE));
         
         for (Point possibleMove : possibleMoves) {
-            Point displayedMove = Point ((coordinates.x + 1) * 2, (coordinates.y * 4) + 3);
+            Point displayedMove = Point ((possibleMove.x + 1) * 2, (possibleMove.y * 4) + 3);
 
             mvaddwstr(displayedMove.x, displayedMove.y - 2, L"║");
             mvaddwstr(displayedMove.x, displayedMove.y + 2, L"║");
