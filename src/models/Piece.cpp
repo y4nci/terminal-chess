@@ -125,6 +125,7 @@ std::vector<Point> getMovesRecursiveHelper(Piece thisPiece, Point currentCoordin
     Point coordinates = currentCoordinates;
 
     do {
+        bool pieceFound = false;
         coordinates += moveVector;
 
         if (coordinates.x < 0 || coordinates.x > 7 || coordinates.y < 0 || coordinates.y > 7) {
@@ -139,9 +140,12 @@ std::vector<Point> getMovesRecursiveHelper(Piece thisPiece, Point currentCoordin
                     possibleMoves.pop_back();
                 }
 
+                pieceFound = true;
                 break;
             }
         }
+
+        if (pieceFound) break;
     } while (multipleAllowed);
 
     return possibleMoves;
