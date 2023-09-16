@@ -15,7 +15,6 @@ Piece::Piece() {
     this->coordinates.x = 0, this->coordinates.y = 0;
     this->player = PlayerType::EMPTY_PLAYER;
     this->isDead = false;
-    this->isSelected = false;
     this->unicode = ' ';
 }
 
@@ -24,7 +23,6 @@ Piece::Piece(PieceType piece, Point coordinates, PlayerType player) {
     this->coordinates = coordinates;
     this->player = player;
     this->isDead = false;
-    this->isSelected = false;
     this->unicode = createUnicode(piece, player);
 }
 
@@ -44,10 +42,6 @@ PlayerType Piece::getPlayer() {
 
 bool Piece::getIsDead() {
     return this->isDead;
-}
-
-bool Piece::getIsSelected() {
-    return this->isSelected;
 }
 
 std::wstring Piece::getUnicode() {
@@ -70,10 +64,6 @@ void Piece::setPlayer(PlayerType player) {
 
 void Piece::setIsDead(bool isDead) {
     this->isDead = isDead;
-}
-
-void Piece::setIsSelected(bool isSelected) {
-    this->isSelected = isSelected;
 }
 
 void Piece::setUnicode(wchar_t unicode) {

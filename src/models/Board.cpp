@@ -36,6 +36,7 @@ Board Board::operator=(Board& other) {
     this->cursor = other.cursor;
     this->pieces = other.pieces;
     this->selectedIdx = other.selectedIdx;
+    this->selectedPiecePossibleMoves = other.selectedPiecePossibleMoves;
 
     return *this;
 }
@@ -48,16 +49,13 @@ void Board::selectPieceAtCursor(bool select) {
         if (coordinates == this->cursor) {
             if (piece.getIsDead()) continue;
             if (!select && i != this->selectedIdx) continue;
-            if (this->selectedIdx != -1 && select) {
-                this->pieces.at(this->selectedIdx).setIsSelected(false);
-            }
-
-            piece.setIsSelected(select);
 
             if (select) {
                 this->selectedIdx = i;
+                this->selectedPiecePossibleMoves = piece.getPossibleMoves(this->pieces);
             } else {
                 this->selectedIdx = -1;
+                this->selectedPiecePossibleMoves.empty();
             }
             break;
         }
@@ -67,11 +65,20 @@ void Board::selectPieceAtCursor(bool select) {
 void Board::moveSelectedToCursor() {
     Point target = this->cursor;
     Piece selected;
-    bool moveSuccessful = true;
+    bool moveAllowed = false, moveSuccessful = true;
     
     if (selectedIdx == -1) return;
 
     selected = this->pieces.at(selectedIdx);
+
+    for (int i = 0; i < this->selectedPiecePossibleMoves.size(); i++) {
+        if (target == this->selectedPiecePossibleMoves[i]) {
+            moveAllowed = true;
+            break;
+        }
+    }
+
+    if (!moveAllowed) return;
 
     for (int i = 0; i < this->pieces.size(); i++) {
         Piece piece = this->pieces.at(i);
@@ -95,12 +102,12 @@ void Board::moveSelectedToCursor() {
     if (!moveSuccessful) return;
 
     this->pieces.at(selectedIdx).setCoordinates(target);
-    this->pieces.at(selectedIdx).setIsSelected(false);
+
+    this->selectedPiecePossibleMoves = this->pieces.at(selectedIdx).getPossibleMoves(this->pieces);
 }
 
 void Board::display() {
     std::vector<std::wstring> displayedBoard (CHESS_BOARD);
-    std::vector<Point> possibleMoves;
     Piece selected;
     Point coordinates;
 
@@ -131,11 +138,9 @@ void Board::display() {
         mvaddwstr(displayedCoordinates.x, displayedCoordinates.y + 1, L"<");
         attroff(COLOR_PAIR(Colouring::SELECTED)); // Turn off the color pair
     
-        possibleMoves = selected.getPossibleMoves(this->pieces);
-
         attron(COLOR_PAIR(Colouring::POSSIBLE_MOVE));
         
-        for (Point possibleMove : possibleMoves) {
+        for (Point possibleMove : this->selectedPiecePossibleMoves) {
             Point displayedMove = Point ((possibleMove.x + 1) * 2, (possibleMove.y * 4) + 3);
 
             mvaddwstr(displayedMove.x, displayedMove.y - 2, L"║");

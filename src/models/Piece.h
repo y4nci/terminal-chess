@@ -17,14 +17,12 @@ public:
     Point getCoordinates();
     PlayerType getPlayer();
     bool getIsDead();
-    bool getIsSelected();
     std::wstring getUnicode();
 
     void setType(PieceType piece);
     void setCoordinates(Point coordinates);
     void setPlayer(PlayerType player);
     void setIsDead(bool isDead);
-    void setIsSelected(bool isSelected);
     void setUnicode(wchar_t unicode);
 
     std::vector<Point> getPossibleMoves(std::vector<Piece> otherPieces);    
@@ -33,7 +31,6 @@ private:
     Point coordinates;
     PlayerType player;
     bool isDead;
-    bool isSelected;
     wchar_t unicode;
 };
 

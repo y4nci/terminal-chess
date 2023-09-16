@@ -30,6 +30,7 @@ private:
     std::vector<Piece> pieces;
     Point cursor;
     int selectedIdx;
+    std::vector<Point> selectedPiecePossibleMoves;
 };
 
 #endif
