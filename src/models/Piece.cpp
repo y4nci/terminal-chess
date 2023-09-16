@@ -143,7 +143,10 @@ std::vector<Point> getMovesRecursiveHelper(Piece thisPiece, Point currentCoordin
 
         for (Piece piece : pieces) {
             if (!piece.getIsDead() && piece.getType() != EMPTY_PIECE && piece.getCoordinates() == coordinates) {
-                if (piece.getPlayer() == thisPiece.getPlayer()) {
+                if (piece.getPlayer() == thisPiece.getPlayer()
+                    // if the piece is a pawn and the move is vertical, don't include the square with the piece
+                    || (thisPiece.getType() == PieceType::PAWN && moveVector.y == 0)) 
+                {
                     possibleMoves.pop_back();
                 }
 
