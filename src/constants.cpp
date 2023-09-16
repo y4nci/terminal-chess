@@ -2,7 +2,7 @@
 
 std::unordered_map<int, struct UNIT_MOVE> UNIT_MOVES = {
     { EMPTY_PIECE, { { Point (0, 0) }, false } },
-    { PAWN, { { Point (0, 1) }, false } },
+    { PAWN, { { Point (1, 0) }, false } },
     { KNIGHT, { { Point (2, 1), Point (1, 2), Point (-2, 1), Point (1, -2), Point (-1, 2), Point (2, -1), Point (-2, -1), Point (-1, -2) }, false } },
     { BISHOP, { { Point (1, 1), Point (-1, 1), Point (1, -1), Point (-1, -1) }, true } },
     { ROOK, { { Point (1, 0), Point (0, 1), Point (-1, 0), Point (0, -1) }, true } },

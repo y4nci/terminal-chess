@@ -92,14 +92,31 @@ std::vector<Point> Piece::getPossibleMoves(std::vector<Piece> otherPieces) {
     if (this->type == EMPTY_PIECE) {
         return possibleMoves;
     } else if (this->type == PieceType::PAWN) {
+        bool upwards;
+
         if (this->player == PlayerType::BLACK) {
-            if (this->coordinates.x == 1) unitMove.unitMoveVectors.push_back(Point (0, 2));
+            if (this->coordinates.x == 1) unitMove.unitMoveVectors.push_back(Point (2, 0));
+            
+            upwards = false;
         } else {
-            if (this->coordinates.x == 6) unitMove.unitMoveVectors.push_back(Point (0, 2));
+            if (this->coordinates.x == 6) unitMove.unitMoveVectors.push_back(Point (2, 0));
 
             for (int i = 0; i < unitMove.unitMoveVectors.size(); i++) {
                 unitMove.unitMoveVectors[i] *= -1; 
             }
+
+            upwards = true;
+        }
+
+        for (int i = 0; i < otherPieces.size(); i++) {
+            Piece otherPiece = otherPieces[i];
+            Point diagonalLeftVector (upwards ? -1 : 1, -1), diagonalRightVector (upwards ? -1 : 1, 1);
+            Point diagonalLeftCell = this->coordinates + diagonalLeftVector, diagonalRightCell = this->coordinates + diagonalRightVector;
+            
+            if (otherPiece.isDead || otherPiece.player == this->player) continue;
+
+            if (otherPiece.coordinates == diagonalLeftCell) unitMove.unitMoveVectors.push_back(diagonalLeftVector);
+            if (otherPiece.coordinates == diagonalRightCell) unitMove.unitMoveVectors.push_back(diagonalRightVector);
         }
     }
 
