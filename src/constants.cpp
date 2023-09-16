@@ -49,6 +49,13 @@ std::vector<std::wstring> CHESS_BOARD = {
     (std::wstring) L" ╠═══╬═══╬═══╬═══╬═══╬═══╬═══╬═══╣ ",
     (std::wstring) L"1║   ║   ║   ║   ║   ║   ║   ║   ║1",
     (std::wstring) L" ╚═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╝ ",
-    (std::wstring) L"   a   b   c   d   e   f   g   h   "
+    (std::wstring) L"   a   b   c   d   e   f   g   h   ",
+    (std::wstring) L"                                   ",
+    (std::wstring) L"                                   ",
+    (std::wstring) L" w-a-s-d: move cursor              ",
+    (std::wstring) L" space:   select piece             ",
+    (std::wstring) L" u:       unselect piece           ",
+    (std::wstring) L" enter:   move selected piece      ",
+    (std::wstring) L" q:       quit                     "
 };
 
